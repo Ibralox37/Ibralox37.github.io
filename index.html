@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <!-- ==========================================================
-     VORIX – Startseite
+     VORIX – Startseite und App mit allen Spielen
      © 2026 Ibralox37 / VORIX – WE CREATE GAMES
 
-     Warum es diese Seite gibt:
+     Seit 07.10.2026 ist die Startseite gleichzeitig die
+     „VORIX-App": alle Spiele mit Link und QR-Code, installierbar
+     aufs Handy. Bearbeitet wird sie in Ibos Vault unter
+     01 Inbox/Vorix Hub/.
+
+     Warum es diese Seite überhaupt gibt (seit 15.09.2026):
      Google zeigt pro Adresse nur EIN Symbol, und es holt es von
-     der Startseite. Unter https://ibralox37.github.io/ lag bis
-     zum 15.09.2026 gar nichts - GitHub lieferte dort eine
-     Fehlerseite. Deshalb stand in der Google-Suche eine graue
-     Weltkugel statt des X, und als Titel tauchte GitHubs eigener
-     Text auf. Diese Seite behebt beides.
+     der Startseite. Titel, Beschreibung, Symbole und die Datei
+     google8c2f6ce57dc8c22b.html deshalb NICHT entfernen.
+
+     Absichtlich OHNE Service Worker: Ein Service Worker auf der
+     Hauptadresse würde auch Timer Challenge und Spotter steuern.
 ========================================================== -->
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 
 <title>VORIX – WE CREATE GAMES</title>
-<meta name="description" content="VORIX – WE CREATE GAMES. Spiele von Ibralox37: Timer-Challange, das Timer Spiel. Kostenlos im Browser spielen.">
+<meta name="description" content="VORIX – WE CREATE GAMES. Alle Spiele von Ibralox37: Timer-Challange, Vorix Spotter und Pancake Obby. Kostenlos spielen und mit QR-Code teilen.">
 <link rel="canonical" href="https://ibralox37.github.io/">
 
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="vorix-favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#07101c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VORIX">
 
 <meta property="og:site_name" content="VORIX – WE CREATE GAMES">
 <meta property="og:title" content="VORIX – WE CREATE GAMES">
-<meta property="og:description" content="Spiele von Ibralox37. Jetzt spielen: Timer-Challange, das Timer Spiel.">
+<meta property="og:description" content="Alle Spiele von Ibralox37: Timer-Challange, Vorix Spotter und Pancake Obby.">
 <meta property="og:image" content="https://ibralox37.github.io/vorschau.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -36,7 +46,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
 <script type="application/ld+json">
 {
@@ -50,119 +60,197 @@
 </script>
 
 <style>
-*{ box-sizing:border-box; }
-
-body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:26px;
-    background:radial-gradient(circle at 50% 30%,#132033,#070b12 72%);
-    color:#fff;
-    font-family:"Rajdhani",Arial,sans-serif;
-    text-align:center;
+/* Design „Vorix Blau" – dieselben Farben und Schriften wie Timer Challenge und Spotter */
+:root {
+  --c-btn: #07518a; --c-accent: #00aaff; --c-info: #66cfff; --c-deep: #042d4c;
+  --orbitron: "Orbitron", "Rajdhani", Arial, sans-serif;
+  --rajdhani: "Rajdhani", "Segoe UI", Arial, sans-serif;
 }
-
-#logo{
-    width:min(460px,82vw);
-    height:auto;
-    filter:drop-shadow(0 2px 20px rgba(0,110,220,.35));
-    animation:schweben 3.6s ease-in-out infinite;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh; color: #fff; font-family: var(--rajdhani); font-size: 17px; text-align: center;
+  padding: calc(26px + env(safe-area-inset-top)) 18px calc(30px + env(safe-area-inset-bottom));
+  background: radial-gradient(900px 620px at 50% 12%, rgba(0,136,255,.16), transparent 62%), radial-gradient(900px 700px at 50% 120%, rgba(0,0,0,.55), transparent 60%), #060d18;
+  background-attachment: fixed;
 }
+a { color: inherit; }
+.inhalt { max-width: 560px; margin: 0 auto; }
+#logo { width: min(440px, 80vw); height: auto; filter: drop-shadow(0 2px 18px rgba(0,110,220,.35)); animation: schweben 3.4s ease-in-out infinite; }
+@keyframes schweben { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-9px) scale(1.02); } }
+h1 { font-family: var(--orbitron); font-size: clamp(17px, 4vw, 22px); letter-spacing: 4px; font-weight: 700; margin: 18px 0 4px; opacity: .9; }
+.unter { font-size: 16px; opacity: .6; margin: 0 0 26px; }
 
-@keyframes schweben{
-    0%,100%{ transform:translateY(0); }
-    50%{ transform:translateY(-8px); }
-}
+/* Spiel-Karten */
+.spiel { position: relative; text-align: left; margin: 0 0 16px; padding: 18px; border-radius: 22px;
+  background: linear-gradient(160deg, #182741, #0f1726); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 14px 40px rgba(0,0,0,.45); }
+.spiel-kopf { display: flex; gap: 14px; align-items: center; }
+.spiel-bild { width: 64px; height: 64px; border-radius: 16px; flex-shrink: 0; object-fit: cover; display: flex; align-items: center; justify-content: center;
+  font-size: 36px; box-shadow: 0 6px 18px rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.12); background: #0b1626; }
+.spiel h2 { margin: 0; font-family: var(--orbitron); font-size: 19px; font-weight: 700; letter-spacing: .5px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tags span { font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 20px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); opacity: .9; }
+.tags .neu { background: linear-gradient(90deg, #ff3b4e, #ff8c42); border: 0; opacity: 1; font-family: var(--orbitron); font-size: 10px; letter-spacing: 1px; }
+.was { font-size: 16px; line-height: 1.45; opacity: .78; margin: 12px 0 14px; }
+.spiel-unten { display: flex; gap: 14px; align-items: center; }
+.qr { width: 104px; height: 104px; flex-shrink: 0; background: #fff; border-radius: 14px; padding: 7px; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #333; font-size: 11px; }
+.qr svg { width: 100%; height: 100%; display: block; }
+.knoepfe { flex: 1; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.startBtn { display: block; text-align: center; text-decoration: none; padding: 14px 10px; border: 0; border-radius: 14px; color: #fff; font-family: var(--orbitron); font-size: 15px; font-weight: 700; letter-spacing: 1.2px; cursor: pointer; transition: filter .15s, transform .1s; }
+.startBtn:hover { filter: brightness(1.15); } .startBtn:active { transform: scale(.97); }
+.startBtn.play { background: linear-gradient(90deg, var(--c-btn), var(--c-accent)); box-shadow: 0 10px 28px rgba(0,0,0,.45); }
+.startBtn.sub { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.13); font-size: 13px; }
+.qr-hinweis { font-size: 12px; opacity: .55; margin-top: 2px; }
 
-h1{
-    font-family:"Orbitron",Arial,sans-serif;
-    font-size:clamp(17px,4vw,22px);
-    letter-spacing:4px;
-    font-weight:700;
-    margin:22px 0 4px;
-    opacity:.9;
-}
+/* VORIX teilen */
+.teilen { margin-top: 26px; padding: 20px 18px; border-radius: 22px; background: rgba(255,255,255,.05); border: 1px solid rgba(0,170,255,.3); }
+.teilen h3 { font-family: var(--orbitron); font-size: 15px; letter-spacing: 2px; margin: 0 0 6px; }
+.teilen p { opacity: .7; font-size: 15px; margin: 0 0 14px; line-height: 1.4; }
+.teilen .qr { margin: 0 auto 14px; width: 150px; height: 150px; }
+.teilen .startBtn { max-width: 300px; margin: 0 auto 9px; }
+footer { margin-top: 34px; font-size: 12px; opacity: .4; letter-spacing: .5px; }
 
-.unter{
-    font-size:16px;
-    opacity:.55;
-    margin-bottom:34px;
-}
-
-.spiel{
-    display:block;
-    width:min(430px,92vw);
-    text-decoration:none;
-    color:#fff;
-    background:linear-gradient(160deg,#12243c,#0b1626);
-    border:1px solid rgba(120,190,255,.18);
-    border-radius:18px;
-    padding:20px 22px;
-    text-align:left;
-    transition:transform .14s,border-color .14s,background .14s;
-}
-
-.spiel:hover{
-    transform:translateY(-3px);
-    border-color:rgba(120,190,255,.45);
-    background:linear-gradient(160deg,#162c49,#0d1b2e);
-}
-
-.spiel .name{
-    font-family:"Orbitron",Arial,sans-serif;
-    font-size:19px;
-    font-weight:700;
-    letter-spacing:1px;
-}
-
-.spiel .was{
-    font-size:15px;
-    opacity:.6;
-    margin-top:5px;
-}
-
-.spiel .los{
-    display:inline-block;
-    margin-top:14px;
-    background:linear-gradient(160deg,#1d7fd6,#0aa3ea);
-    padding:9px 20px;
-    border-radius:10px;
-    font-weight:700;
-    letter-spacing:1px;
-    font-size:15px;
-}
-
-footer{
-    margin-top:44px;
-    font-size:12px;
-    opacity:.35;
-    letter-spacing:.5px;
-}
+/* Großer QR-Code zum Zeigen */
+.overlay { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; background: rgba(4,8,16,.82); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); padding: 16px; }
+.dialog { width: min(92%, 380px); padding: 24px 22px 20px; border-radius: 22px; border: 1px solid rgba(255,255,255,.13); background: linear-gradient(160deg, #1b2942, #111a2b); box-shadow: 0 28px 80px rgba(0,0,0,.7), 0 0 40px rgba(0,136,255,.15); animation: rein .28s cubic-bezier(.2,1.3,.4,1); }
+@keyframes rein { 0% { opacity: 0; transform: scale(.85) translateY(14px); } 100% { opacity: 1; transform: none; } }
+.dialog h3 { font-family: var(--orbitron); margin: 0 0 4px; font-size: 19px; }
+.dialog .gross { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 18px; padding: 14px; margin: 14px 0 10px; }
+.dialog .gross svg { width: 100%; height: 100%; display: block; }
+.dialog .adresse { font-size: 14px; opacity: .65; word-break: break-all; margin-bottom: 14px; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: #182238; border: 1px solid var(--c-accent); border-radius: 14px; padding: 12px 18px; z-index: 60; font-weight: 700; box-shadow: 0 8px 30px rgba(0,0,0,.5); max-width: 90vw; }
 </style>
 </head>
 
 <body>
+<div class="inhalt">
 
 <img id="logo" src="vorix-logo-hell.png" alt="VORIX – WE CREATE GAMES">
-
 <h1>WE CREATE GAMES</h1>
-<p class="unter">Spiele von Ibralox37</p>
+<p class="unter">Alle Spiele von Ibralox37 – tippen zum Spielen, QR-Code zum Teilen</p>
 
-<a class="spiel" href="/Timer-/">
-    <div class="name">🎯 Timer-Challange</div>
-    <div class="was">
-        Das Timer Spiel. Stoppe den Timer genau auf die Zielzeit –
-        auf die Hundertstelsekunde. 9 Modi, Online-Konten und
-        weltweite Bestenliste.
+<article class="spiel" data-url="https://ibralox37.github.io/Timer-/" data-name="Timer-Challange">
+  <div class="spiel-kopf">
+    <img class="spiel-bild" src="icon-192.png" alt="">
+    <div>
+      <h2>🎯 Timer-Challange</h2>
+      <div class="tags"><span>Browser</span><span>Kostenlos</span><span>Bestenliste</span></div>
     </div>
-    <span class="los">▶ JETZT SPIELEN</span>
-</a>
+  </div>
+  <p class="was">Das Timer Spiel. Stoppe den Timer genau auf die Zielzeit – auf die Hundertstelsekunde. 9 Modi, Online-Konten und weltweite Bestenliste.</p>
+  <div class="spiel-unten">
+    <button class="qr" data-gross aria-label="QR-Code groß zeigen">QR lädt …</button>
+    <div class="knoepfe">
+      <a class="startBtn play" href="https://ibralox37.github.io/Timer-/">▶ SPIELEN</a>
+      <button class="startBtn sub" data-teilen>🔗 TEILEN</button>
+      <div class="qr-hinweis">QR-Code antippen = groß zeigen</div>
+    </div>
+  </div>
+</article>
+
+<article class="spiel" data-url="https://ibralox37.github.io/spotter/" data-name="Vorix Spotter">
+  <div class="spiel-kopf">
+    <img class="spiel-bild" src="https://ibralox37.github.io/spotter/icon-192.png" alt="">
+    <div>
+      <h2>📸 Vorix Spotter</h2>
+      <div class="tags"><span class="neu">NEU</span><span>Handy</span><span>Kostenlos</span><span>KI</span></div>
+    </div>
+  </div>
+  <p class="was">Fotografiere echte Fahrzeuge – die KI erkennt sie, sogar das genaue Automodell. Sammle Sticker, jage Holo-Sticker und fülle dein Album mit 310 Plätzen. VIP ist gratis.</p>
+  <div class="spiel-unten">
+    <button class="qr" data-gross aria-label="QR-Code groß zeigen">QR lädt …</button>
+    <div class="knoepfe">
+      <a class="startBtn play" href="https://ibralox37.github.io/spotter/">▶ SPIELEN</a>
+      <button class="startBtn sub" data-teilen>🔗 TEILEN</button>
+      <div class="qr-hinweis">QR-Code antippen = groß zeigen</div>
+    </div>
+  </div>
+</article>
+
+<article class="spiel" data-url="https://www.roblox.com/de/games/102227354265210/Pancake-Obby" data-name="Pancake Obby">
+  <div class="spiel-kopf">
+    <div class="spiel-bild" style="background:linear-gradient(160deg,#ffb347,#a0622d)">🥞</div>
+    <div>
+      <h2>🥞 Pancake Obby</h2>
+      <div class="tags"><span>Roblox</span><span>Parcours</span><span>Kostenlos</span></div>
+    </div>
+  </div>
+  <p class="was">Der Hindernis-Parcours auf Roblox mit dem Mini-Pfannkuchen. Zum Spielen brauchst du Roblox.</p>
+  <div class="spiel-unten">
+    <button class="qr" data-gross aria-label="QR-Code groß zeigen">QR lädt …</button>
+    <div class="knoepfe">
+      <a class="startBtn play" href="https://www.roblox.com/de/games/102227354265210/Pancake-Obby" target="_blank" rel="noopener">▶ AUF ROBLOX</a>
+      <button class="startBtn sub" data-teilen>🔗 TEILEN</button>
+      <div class="qr-hinweis">QR-Code antippen = groß zeigen</div>
+    </div>
+  </div>
+</article>
+
+<section class="teilen spiel" data-url="https://ibralox37.github.io/" data-name="VORIX – alle Spiele" style="text-align:center">
+  <h3>📱 VORIX TEILEN</h3>
+  <p>Zeig deinen Freunden diesen QR-Code. Dann haben sie alle Spiele auf einmal.</p>
+  <button class="qr" data-gross aria-label="QR-Code groß zeigen">QR lädt …</button>
+  <button class="startBtn play" data-teilen>🔗 VORIX TEILEN</button>
+  <button class="startBtn sub" data-installieren>⬇️ ALS APP INSTALLIEREN</button>
+</section>
 
 <footer>© 2026 Ibralox37 / VORIX – WE CREATE GAMES</footer>
+</div>
 
+<script>
+'use strict';
+// QR-Codes werden direkt im Browser gemalt (Bibliothek „qrcode-generator", kostenlos).
+const QR_BIBLIOTHEK = 'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';
+let installHinweis = null;   // Android/Chrome: echter Installieren-Knopf
+
+function toast(text) {
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = text;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+function qrSvg(url) {
+  const qr = qrcode(0, 'M');
+  qr.addData(url);
+  qr.make();
+  return qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+}
+function grossZeigen(karte) {
+  const url = karte.dataset.url, name = karte.dataset.name;
+  const o = document.createElement('div');
+  o.className = 'overlay';
+  o.innerHTML = `<div class="dialog"><h3></h3><div style="opacity:.7;font-size:15px">Mit der Handy-Kamera scannen</div>
+    <div class="gross">${window.qrcode ? qrSvg(url) : ''}</div><div class="adresse"></div>
+    <button class="startBtn sub" style="width:100%">SCHLIESSEN</button></div>`;
+  o.querySelector('h3').textContent = name;
+  o.querySelector('.adresse').textContent = url;
+  o.addEventListener('click', e => { if (e.target === o || e.target.tagName === 'BUTTON') o.remove(); });
+  document.body.appendChild(o);
+}
+async function teilen(karte) {
+  const url = karte.dataset.url, name = karte.dataset.name;
+  if (navigator.share) {
+    try { await navigator.share({ title: name, text: `Spiel ${name} von VORIX!`, url }); } catch (e) { /* abgebrochen */ }
+    return;
+  }
+  try { await navigator.clipboard.writeText(url); toast('🔗 Link kopiert!'); }
+  catch (e) { prompt('Link zum Kopieren:', url); }
+}
+function installieren() {
+  if (installHinweis) { installHinweis.prompt(); installHinweis = null; return; }
+  const iphone = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  toast(iphone ? 'iPhone: Unten auf „Teilen" tippen, dann „Zum Home-Bildschirm".' : 'Im Browser-Menü (⋮) auf „App installieren" oder „Zum Startbildschirm" tippen.');
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installHinweis = e; });
+
+document.querySelectorAll('[data-gross]').forEach(b => b.addEventListener('click', () => grossZeigen(b.closest('[data-url]'))));
+document.querySelectorAll('[data-teilen]').forEach(b => b.addEventListener('click', () => teilen(b.closest('[data-url]'))));
+document.querySelectorAll('[data-installieren]').forEach(b => b.addEventListener('click', installieren));
+
+// QR-Bibliothek laden und alle kleinen QR-Codes malen
+const s = document.createElement('script');
+s.src = QR_BIBLIOTHEK;
+s.onload = () => document.querySelectorAll('[data-url]').forEach(k => { const f = k.querySelector('.qr'); if (f) f.innerHTML = qrSvg(k.dataset.url); });
+s.onerror = () => document.querySelectorAll('.qr').forEach(f => { f.textContent = 'QR braucht Internet'; });
+document.head.appendChild(s);
+</script>
 </body>
 </html>
